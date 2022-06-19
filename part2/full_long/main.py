@@ -27,15 +27,15 @@
 # -----------------------
 import sqlite3
 
-con = sqlite3.connect("../netflix.db")
-cur = con.cursor()
-sqlite_query = ("")  # TODO измените код запроса
-cur.execute(sqlite_query)
-executed_query = cur.fetchall()
-result = ""
-# TODO Результат запроса сохраните в переменной result
-# для последующей выдачи в требуемом формате
-con.close()
+with sqlite3.connect("../netflix.db") as con:
+    cur = con.cursor()
+    sqlite_query = ("SELECT SUM(duration) FROM netflix "
+                "WHERE release_year=2010 "
+                "AND type='Movie'")
+    cur.execute(sqlite_query)
+    total_hours = cur.fetchall()[0][0]
+    result = (f'Чтобы посмотреть все фильмы, нам нужно {total_hours} часов.')
+
 
 if __name__ == '__main__':
     print(result)
